@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devops-pipeline-application-deployment
+spec:
+  selector:
+    matchLabels:
+      app: devops-pipeline-application
+  template:
+    metadata:
+      labels:
+        app: devops-pipeline-application
+    spec:
+      containers:
+        - name: devops-pipeline-application
+          image: ebrucinarr/devops-pipeline-application:latest
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: ser
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: devops-pipeline-application-service
+spec:
+  selector:
+    app: devops-pipeline-application
+  ports:
+    - port: 8080
+      targetPort: 8080
+  type: NodePort
