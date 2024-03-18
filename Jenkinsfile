@@ -28,14 +28,12 @@ pipeline {
                     bat 'echo docker login -u ebrucinarr -p${dockerhub}'
                     bat 'docker push ebrucinarr/devops-pipeline-application:latest'
                 }
-               //sh 'docker build -t ebrucinarr/devops-pipeline-application .'
-               bat 'docker build -t ebrucinarr/devops-pipeline-application .'
             }
         }
 
         stage('Deploy Kubernetes') {
             steps {
-                kubernetesDeploy configs: 'deploymentservice.yml', kubeConfig: [path: ''], kubeconfigId: 'Kubernetes', secretName: '', ssh: [sshCredentialsId: '*', sshServer: ''], textCredentials: [certificateAuthorityData: '', clientCertificateData: '', clientKeyData: '', serverUrl: 'https://']
+                kubernetesDeploy (configs: 'deploymentservice.yml', kubeconfigId: 'Kubernetes')
             }
         }
     }
